@@ -42,14 +42,13 @@ LIB_OBJS := $(patsubst %.c, %.o, $(LIB_SRCS))
 $(LIB_OBJS):
 	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
 
-libc_errors.o: $(LIB_OBJS) $(DEPS_OBJS);
-	cp $(LIB_HDRS) $(DIST_DIR)
+$(NAME).o: $(LIB_OBJS) $(DEPS_OBJS);
 	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
-libc_errors.a: $(LIB_OBJS) $(DEPS_OBJS);
+$(NAME).a: $(LIB_OBJS) $(DEPS_OBJS);
 	ar rcs $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
-libc_errors.so: $(LIB_OBJS) $(DEPS_OBJS);
+$(NAME).so: $(LIB_OBJS) $(DEPS_OBJS);
 	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 #------------------------------
@@ -73,6 +72,8 @@ test: $(TEST_OBJS) $(DIST_OBJS);
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: clean libc_errors.o libc_errors.so libc_errors.a app test;
+	cp $(LIB_HDRS) $(DIST_DIR);
+	tar -czvf $(NAME).tar.gz $(DIST_DIR);
 
 clean:
 	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/*;
