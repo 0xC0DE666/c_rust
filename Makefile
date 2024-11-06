@@ -20,8 +20,8 @@ DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
 #------------------------------
 
 APP_DIR := ./src/app
-APP_SRCS := $(wildcard $(APP_DIR)/*.c)
 APP_HDRS = $(wildcard $(APP_DIR)/*.h)
+APP_SRCS := $(wildcard $(APP_DIR)/*.c)
 APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
 
 $(APP_OBJS):
@@ -35,8 +35,8 @@ app: $(APP_OBJS) $(DIST_OBJS);
 #------------------------------
 
 LIB_DIR := ./src/lib
-LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_HDRS = $(wildcard $(LIB_DIR)/*.h)
+LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_OBJS := $(patsubst %.c, %.o, $(LIB_SRCS))
 
 $(LIB_OBJS):
@@ -56,8 +56,8 @@ libc_errors.so: $(LIB_OBJS) $(DEPS_OBJS);
 #------------------------------
 
 TEST_DIR := ./src/test
-TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 TEST_HDRS = $(wildcard $(TEST_DIR)/*.h)
+TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
 
 $(TEST_OBJS):
