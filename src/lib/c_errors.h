@@ -9,8 +9,8 @@ typedef struct Error {
 } Error;
 
 
-Error* new_error(int code, char* message);
-void free_error(Error** error);
+Error* error_new(int code, char* message);
+void error_free(Error** error);
 
 typedef struct Result {
   void* ok;

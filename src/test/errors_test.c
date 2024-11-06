@@ -6,26 +6,26 @@
 #include "../lib/c_errors.h"
 
 // ####################
-// new_error
+// error_new
 // ####################
-Test(new_error, _1) {
-  Error* actual = new_error(1, "error");
+Test(error_new, _1) {
+  Error* actual = error_new(1, "error");
   Error expected = {1, "error"};
 
   cr_assert_eq(actual != NULL, true);
   cr_assert_eq(actual->code, expected.code);
   cr_assert_eq(strcmp(actual->message, expected.message), 0);
 
-  free_error(&actual);
+  error_free(&actual);
 }
 
 // ####################
-// free_error
+// error_free
 // ####################
-Test(free_error, _1) {
-  Error* actual = new_error(1, "error");
+Test(error_free, _1) {
+  Error* actual = error_new(1, "error");
 
-  free_error(&actual);
+  error_free(&actual);
 
   cr_assert_eq(actual, NULL);
 }
@@ -48,7 +48,7 @@ Test(result_ok, _1) {
 // result_error
 // ####################
 Test(result_error, _1) {
-  Error* err = new_error(1, "error");
+  Error* err = error_new(1, "error");
   Result actual = result_error(1, "error");
   Result expected = {NULL, err};
 
@@ -57,5 +57,5 @@ Test(result_error, _1) {
   cr_assert_eq(actual.error->code, expected.error->code);
   cr_assert_eq(strcmp(actual.error->message, expected.error->message), 0);
 
-  free_error(&err);
+  error_free(&err);
 }
