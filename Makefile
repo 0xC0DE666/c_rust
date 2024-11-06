@@ -43,6 +43,7 @@ $(LIB_OBJS):
 	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
 
 libc_errors.o: $(LIB_OBJS) $(DEPS_OBJS);
+	cp $(LIB_HDRS) $(DIST_DIR)
 	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 libc_errors.a: $(LIB_OBJS) $(DEPS_OBJS);
