@@ -7,8 +7,7 @@
 
 Error* error_new(int code, char* message) {
   Error* err = malloc(sizeof(Error));
-  err->code = code;
-  err->message = message;
+  *err = (Error){code, message};
   return err;
 }
 
