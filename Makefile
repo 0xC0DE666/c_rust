@@ -5,13 +5,30 @@ QUALIFIER := $(NAME)-$(VERSION)
 CC := gcc
 C_FLAGS := -std=c99 -g -Wall -Wextra
 
-DIST_DIR := ./dist
-BIN_DIR := ./bin
+BIN_DIR := ./build/bin
+DIST_DIR := ./build/dist
+# DIST_OBJS := $(wildcard $(DIST_DIR)/*.o)
+DIST_OBJS := $(DIST_DIR)/libc_errors.o
 
-all: clean app test libc_errors.so libc_errors.a;
+all: clean libc_errors.o libc_errors.so libc_errors.a app test;
 
-clean:
-	rm -f ./src/main.o $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/*;
+DEPS_DIR := ./src/deps
+DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
+
+#------------------------------
+# APP
+#------------------------------
+
+APP_DIR := ./src/app
+APP_SRCS := $(wildcard $(APP_DIR)/*.c)
+APP_HDRS = $(wildcard $(APP_DIR)/*.h)
+APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
+
+$(APP_OBJS):
+	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
+
+app: $(APP_OBJS) $(DIST_OBJS);
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) $(DIST_OBJS);
 
 #------------------------------
 # LIB
@@ -22,24 +39,17 @@ LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_HDRS = $(wildcard $(LIB_DIR)/*.h)
 LIB_OBJS := $(patsubst %.c, %.o, $(LIB_SRCS))
 
-$(LIB_SRCS):
-	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
+$(LIB_OBJS):
+	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
 
-libc_errors.o: $(LIB_OBJS);
-	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS);
+libc_errors.o: $(LIB_OBJS) $(DEPS_OBJS);
+	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
-libc_errors.so: $(LIB_OBJS) $(LIB_HDRS);
-	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(DIST_DIR)/$@ $(LIB_OBJS);
+libc_errors.a: $(LIB_OBJS) $(DEPS_OBJS);
+	ar rcs $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
-libc_errors.a: $(LIB_OBJS);
-	ar rcs $(DIST_DIR)/$@ $(LIB_OBJS);
-
-main.o:
-	$(CC) $(C_FLAGS) -c -o ./src/main.o ./src/main.c;
-
-app: main.o libc_errors.o;
-	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ ./src/main.o $(DIST_DIR)/libc_errors.o;
-
+libc_errors.so: $(LIB_OBJS) $(DEPS_OBJS);
+	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 #------------------------------
 # TESTS
@@ -50,16 +60,18 @@ TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 TEST_HDRS = $(wildcard $(TEST_DIR)/*.h)
 TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
 
-$(TEST_SRCS):
-	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
+$(TEST_OBJS):
+	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
 
-test: $(LIB_OBJS) $(TEST_OBJS);
-	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(LIB_OBJS) $(TEST_OBJS);
-
+test: $(TEST_OBJS) $(DIST_OBJS);
+	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(TEST_OBJS) $(DIST_OBJS);
 
 #------------------------------
 # RELEASE
 #------------------------------
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
-release: clean app test libc_errors.so;
+release: clean libc_errors.o libc_errors.so libc_errors.a app test;
+
+clean:
+	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/*;
