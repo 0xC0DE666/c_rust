@@ -9,9 +9,9 @@ BUILD_DIR := ./build
 BIN_DIR := ./build/bin
 DIST_DIR := ./build/dist
 # DIST_OBJS := $(wildcard $(DIST_DIR)/*.o)
-DIST_OBJS := $(DIST_DIR)/libc_errors.o
+DIST_OBJS := $(DIST_DIR)/$(NAME).o
 
-all: clean libc_errors.o libc_errors.so libc_errors.a app test;
+all: clean $(NAME).o $(NAME).so $(NAME).a app test;
 
 DEPS_DIR := ./src/deps
 DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
@@ -72,7 +72,7 @@ test: $(TEST_OBJS) $(DIST_OBJS);
 #------------------------------
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
-release: clean libc_errors.o libc_errors.so libc_errors.a app test;
+release: clean $(NAME).o $(NAME).so $(NAME).a app test;
 	cp $(LIB_HDRS) $(DIST_DIR);
 	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz $(DIST_DIR);
 
