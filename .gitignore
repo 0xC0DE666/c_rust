@@ -1,5 +1,6 @@
-bin/*
-# dist/*
+./build/bin/*
+./build/dist/*
 .env
 *.o
 *.vim
+*.tar.gz
