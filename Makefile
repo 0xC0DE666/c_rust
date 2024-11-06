@@ -6,8 +6,10 @@ CC := gcc
 C_FLAGS := -std=c99 -g -Wall -Wextra
 
 BUILD_DIR := ./build
-BIN_DIR := ./build/bin
-DIST_DIR := ./build/dist
+BIN_DIR := $(BUILD_DIR)/bin
+DIST_DIR := $(BUILD_DIR)/dist
+OBJ_DIR := $(BUILD_DIR)/obj
+SRC_DIR := ./src
 # DIST_OBJS := $(wildcard $(DIST_DIR)/*.o)
 DIST_OBJS := $(DIST_DIR)/$(NAME).o
 
@@ -20,13 +22,14 @@ DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
 # APP
 #------------------------------
 
-APP_DIR := ./src/app
-APP_HDRS = $(wildcard $(APP_DIR)/*.h)
-APP_SRCS := $(wildcard $(APP_DIR)/*.c)
-APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
+APP_SRC_DIR := $(SRC_DIR)/app
+APP_OBJ_DIR := $(OBJ_DIR)/app
+APP_HDRS = $(wildcard $(APP_SRC_DIR)/*.h)
+APP_SRCS := $(wildcard $(APP_SRC_DIR)/*.c)
+APP_OBJS := $(patsubst $(APP_SRC_DIR)/%.c, $(APP_OBJ_DIR)/%.o, $(APP_SRCS))
 
-$(APP_OBJS):
-	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
+$(APP_OBJ_DIR)/%.o: $(APP_SRC_DIR)/%.c | $(APP_OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 app: $(APP_OBJS) $(DIST_OBJS);
 	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) $(DIST_OBJS);
@@ -35,13 +38,14 @@ app: $(APP_OBJS) $(DIST_OBJS);
 # LIB
 #------------------------------
 
-LIB_DIR := ./src/lib
-LIB_HDRS = $(wildcard $(LIB_DIR)/*.h)
-LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
-LIB_OBJS := $(patsubst %.c, %.o, $(LIB_SRCS))
+LIB_SRC_DIR := $(SRC_DIR)/lib
+LIB_OBJ_DIR := $(OBJ_DIR)/lib
+LIB_HDRS = $(wildcard $(LIB_SRC_DIR)/*.h)
+LIB_SRCS := $(wildcard $(LIB_SRC_DIR)/*.c)
+LIB_OBJS := $(patsubst $(LIB_SRC_DIR)/%.c, $(LIB_OBJ_DIR)/%.o, $(LIB_SRCS))
 
-$(LIB_OBJS):
-	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
+$(LIB_OBJ_DIR)/%.o: $(LIB_SRC_DIR)/%.c | $(LIB_OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME).o: $(LIB_OBJS) $(DEPS_OBJS);
 	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
@@ -56,13 +60,14 @@ $(NAME).so: $(LIB_OBJS) $(DEPS_OBJS);
 # TESTS
 #------------------------------
 
-TEST_DIR := ./src/test
-TEST_HDRS = $(wildcard $(TEST_DIR)/*.h)
-TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
-TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
+TEST_SRC_DIR := $(SRC_DIR)/test
+TEST_OBJ_DIR := $(OBJ_DIR)/test
+TEST_HDRS = $(wildcard $(TEST_SRC_DIR)/*.h)
+TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.c)
+TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.c, $(TEST_OBJ_DIR)/%.o, $(TEST_SRCS))
 
-$(TEST_OBJS):
-	$(CC) $(C_FLAGS) -c -o $@ $(patsubst %.o, %.c, $@);
+$(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c | $(TEST_OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 test: $(TEST_OBJS) $(DIST_OBJS);
 	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(TEST_OBJS) $(DIST_OBJS);
@@ -77,4 +82,4 @@ release: clean $(NAME).o $(NAME).so $(NAME).a app test;
 	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz $(DIST_DIR);
 
 clean:
-	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/*;
+	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/* $(BUILD_DIR)/$(NAME).tar.gz;
