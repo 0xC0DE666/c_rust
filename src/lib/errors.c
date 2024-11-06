@@ -1,5 +1,7 @@
+#include <errno.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "./c_errors.h"
 
@@ -8,6 +10,10 @@ Error* error_new(int code, char* message) {
   err->code = code;
   err->message = message;
   return err;
+}
+
+Error* std_error_new() {
+  return error_new(errno, strerror(errno));
 }
 
 void error_free(Error** error) {

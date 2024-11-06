@@ -1,9 +1,11 @@
+#include <errno.h>
 #include <string.h>
 
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
 #include "../lib/c_errors.h"
+#include "./utils.h"
 
 // ####################
 // error_new
@@ -11,6 +13,20 @@
 Test(error_new, _1) {
   Error* actual = error_new(1, "error");
   Error expected = {1, "error"};
+
+  cr_assert_eq(actual != NULL, true);
+  cr_assert_eq(actual->code, expected.code);
+  cr_assert_eq(strcmp(actual->message, expected.message), 0);
+
+  error_free(&actual);
+}
+
+// ####################
+// std_error_new
+// ####################
+Test(std_error_new, _1) {
+  Error* actual = file_404();
+  Error expected = {ENOENT, strerror(errno)};
 
   cr_assert_eq(actual != NULL, true);
   cr_assert_eq(actual->code, expected.code);
