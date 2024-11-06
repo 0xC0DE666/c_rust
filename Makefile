@@ -5,6 +5,7 @@ QUALIFIER := $(NAME)-$(VERSION)
 CC := gcc
 C_FLAGS := -std=c99 -g -Wall -Wextra
 
+BUILD_DIR := ./build
 BIN_DIR := ./build/bin
 DIST_DIR := ./build/dist
 # DIST_OBJS := $(wildcard $(DIST_DIR)/*.o)
@@ -73,7 +74,7 @@ test: $(TEST_OBJS) $(DIST_OBJS);
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: clean libc_errors.o libc_errors.so libc_errors.a app test;
 	cp $(LIB_HDRS) $(DIST_DIR);
-	tar -czvf $(NAME).tar.gz $(DIST_DIR);
+	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz $(DIST_DIR);
 
 clean:
 	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/*;
