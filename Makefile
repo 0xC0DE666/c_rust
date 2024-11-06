@@ -15,7 +15,7 @@ DIST_OBJS := $(DIST_DIR)/$(NAME).o
 
 all: clean $(NAME).o $(NAME).so $(NAME).a app test;
 
-DEPS_DIR := ./src/deps
+DEPS_DIR := $(SRC_DIR)/deps
 DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
 
 #------------------------------
