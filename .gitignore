@@ -1,5 +1,5 @@
-./build/bin/*
-./build/dist/*
+build/bin/*
+build/dist/*
 .env
 *.o
 *.vim
