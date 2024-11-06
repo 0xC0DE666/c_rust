@@ -18,5 +18,6 @@ typedef struct Result {
 
 Result result_ok(void* value);
 Result result_error(int code, char* message);
+Result result_std_error();
 
 #endif

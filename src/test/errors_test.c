@@ -73,5 +73,23 @@ Test(result_error, _1) {
   cr_assert_eq(actual.error->code, expected.error->code);
   cr_assert_eq(strcmp(actual.error->message, expected.error->message), 0);
 
+  error_free(&actual.error);
   error_free(&err);
+}
+
+// ####################
+// result_std_error
+// ####################
+Test(result_std_error, _1) {
+  file_404();
+  Result actual = result_std_error();
+  Error err = {ENOENT, strerror(errno)};
+  Result expected = {NULL, &err};
+
+  cr_assert_eq(actual.ok, NULL);
+  cr_assert_eq(actual.error != NULL, true);
+  cr_assert_eq(actual.error->code, expected.error->code);
+  cr_assert_eq(strcmp(actual.error->message, expected.error->message), 0);
+
+  error_free(&actual.error);
 }

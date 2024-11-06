@@ -28,3 +28,7 @@ Result result_ok(void* value) {
 Result result_error(int code, char* message) {
   return (Result) { NULL, error_new(code, message) };
 }
+
+Result result_std_error() {
+  return (Result) { NULL, std_error_new() };
+}
