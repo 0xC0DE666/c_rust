@@ -79,7 +79,13 @@ test: $(TEST_OBJS) $(DIST_OBJS);
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: clean $(NAME).o $(NAME).so $(NAME).a app test;
 	cp $(LIB_HDRS) $(DIST_DIR);
-	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz $(DIST_DIR);
+	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz -C $(DIST_DIR) .;
 
 clean:
 	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/* $(BUILD_DIR)/$(NAME).tar.gz;
+
+
+# TODO create all necessary dirs if not exist
+# Create obj directory if it does not exist
+# $(OBJ_DIR):
+# 	mkdir -p $(OBJ_DIR)
