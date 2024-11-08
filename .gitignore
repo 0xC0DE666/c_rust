@@ -2,5 +2,7 @@ build/bin/*
 build/release/*
 .env
 *.o
+*.a
+*.so
 *.vim
 *.tar.gz
