@@ -1,19 +1,23 @@
-VERSION := 0.0.0
 NAME := libc_errors
-QUALIFIER := $(NAME)-$(VERSION)
+VERSION := 0.0.0
 
 CC := gcc
 C_FLAGS := -std=c99 -g -Wall -Wextra
 
+define GET_VERSIONED_NAME
+$(NAME).$(1).$(VERSION)
+endef
+
 BUILD_DIR := ./build
 BIN_DIR := $(BUILD_DIR)/bin
-DIST_DIR := $(BUILD_DIR)/dist
+RELEASE_DIR := $(BUILD_DIR)/release
 OBJ_DIR := $(BUILD_DIR)/obj
 SRC_DIR := ./src
-# DIST_OBJS := $(wildcard $(DIST_DIR)/*.o)
-DIST_OBJS := $(DIST_DIR)/$(NAME).o
+RELEASE_O := $(RELEASE_DIR)/$(NAME).o
+VERSIONED_RELEASE_ASSETS := $(call GET_VERSIONED_NAME,o) $(call GET_VERSIONED_NAME,a) $(call GET_VERSIONED_NAME,so)
+UNVERSIONED_RELEASE_ASSETS := $(NAME).o $(NAME).a $(NAME).so
 
-all: clean $(NAME).o $(NAME).so $(NAME).a app test;
+all: clean $(UNVERSIONED_RELEASE_ASSETS) app test;
 
 DEPS_DIR := $(SRC_DIR)/deps
 DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
@@ -29,10 +33,10 @@ APP_SRCS := $(wildcard $(APP_SRC_DIR)/*.c)
 APP_OBJS := $(patsubst $(APP_SRC_DIR)/%.c, $(APP_OBJ_DIR)/%.o, $(APP_SRCS))
 
 $(APP_OBJ_DIR)/%.o: $(APP_SRC_DIR)/%.c | $(APP_OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(C_FLAGS) -c $< -o $@
 
-app: $(APP_OBJS) $(DIST_OBJS);
-	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) $(DIST_OBJS);
+app: $(APP_OBJS) $(RELEASE_O);
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) $(RELEASE_O);
 
 #------------------------------
 # LIB
@@ -45,16 +49,27 @@ LIB_SRCS := $(wildcard $(LIB_SRC_DIR)/*.c)
 LIB_OBJS := $(patsubst $(LIB_SRC_DIR)/%.c, $(LIB_OBJ_DIR)/%.o, $(LIB_SRCS))
 
 $(LIB_OBJ_DIR)/%.o: $(LIB_SRC_DIR)/%.c | $(LIB_OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(C_FLAGS) -c $< -o $@
 
+# VERSIONED
+$(call GET_VERSIONED_NAME,o): $(LIB_OBJS) $(DEPS_OBJS);
+	ld -relocatable -o $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+
+$(call GET_VERSIONED_NAME,a): $(LIB_OBJS) $(DEPS_OBJS);
+	ar rcs $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+
+$(call GET_VERSIONED_NAME,so): $(LIB_OBJS) $(DEPS_OBJS);
+	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+
+# UNVERSIONED
 $(NAME).o: $(LIB_OBJS) $(DEPS_OBJS);
-	ld -relocatable -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+	ld -relocatable -o $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 $(NAME).a: $(LIB_OBJS) $(DEPS_OBJS);
-	ar rcs $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+	ar rcs $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 $(NAME).so: $(LIB_OBJS) $(DEPS_OBJS);
-	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(DIST_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
+	$(CC) $(C_FLAGS) -fPIC -shared -lc -o $(RELEASE_DIR)/$@ $(LIB_OBJS) $(DEPS_OBJS);
 
 #------------------------------
 # TESTS
@@ -67,25 +82,19 @@ TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.c)
 TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.c, $(TEST_OBJ_DIR)/%.o, $(TEST_SRCS))
 
 $(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c | $(TEST_OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(C_FLAGS) -c $< -o $@
 
-test: $(TEST_OBJS) $(DIST_OBJS);
-	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(TEST_OBJS) $(DIST_OBJS);
+test: $(TEST_OBJS) $(RELEASE_O);
+	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(TEST_OBJS) $(RELEASE_O);
 
 #------------------------------
 # RELEASE
 #------------------------------
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
-release: clean $(NAME).o $(NAME).so $(NAME).a app test;
-	cp $(LIB_HDRS) $(DIST_DIR);
-	tar -czvf $(BUILD_DIR)/$(NAME).tar.gz -C $(DIST_DIR) .;
+release: clean $(VERSIONED_RELEASE_ASSETS) $(UNVERSIONED_RELEASE_ASSETS) app test;
+	cp $(LIB_HDRS) $(RELEASE_DIR);
+	tar -czvf $(BUILD_DIR)/$(call GET_VERSIONED_NAME,tar.gz) -C $(RELEASE_DIR) .;
 
 clean:
-	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(DIST_DIR)/* $(BIN_DIR)/* $(BUILD_DIR)/$(NAME).tar.gz;
-
-
-# TODO create all necessary dirs if not exist
-# Create obj directory if it does not exist
-# $(OBJ_DIR):
-# 	mkdir -p $(OBJ_DIR)
+	rm -f $(APP_OBJS) $(LIB_OBJS) $(TEST_OBJS) $(RELEASE_DIR)/* $(BIN_DIR)/* $(BUILD_DIR)/$(call GET_VERSIONED_NAME,tar.gz);
