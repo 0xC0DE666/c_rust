@@ -1,6 +1,7 @@
+.*.env
 build/bin/*
+build/obj/*
 build/release/*
-.env
 *.o
 *.a
 *.so
