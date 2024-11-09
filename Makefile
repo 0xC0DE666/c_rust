@@ -9,6 +9,9 @@ $(NAME).$(1).$(VERSION)
 endef
 
 SRC_DIR := ./src
+DEPS_ROOT_DIR := $(SRC_DIR)/deps
+DEPS_OBJS := $(shell find $(DEPS_ROOT_DIR) -type f -name "*.o")
+
 BUILD_DIR := ./build
 BIN_DIR := $(BUILD_DIR)/bin
 OBJ_DIR := $(BUILD_DIR)/obj
@@ -18,9 +21,6 @@ VERSIONED_RELEASE_ASSETS := $(call GET_VERSIONED_NAME,o) $(call GET_VERSIONED_NA
 UNVERSIONED_RELEASE_ASSETS := $(NAME).o $(NAME).a $(NAME).so
 
 all: clean $(UNVERSIONED_RELEASE_ASSETS) app test;
-
-DEPS_DIR := $(SRC_DIR)/deps
-DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
 
 #------------------------------
 # APP
@@ -94,6 +94,7 @@ test: $(TEST_OBJS) $(RELEASE_O);
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: clean $(VERSIONED_RELEASE_ASSETS) $(UNVERSIONED_RELEASE_ASSETS) app test;
 	cp $(LIB_HDRS) $(RELEASE_DIR);
+	echo $(VERSION) > $(RELEASE_DIR)/version.txt;
 	tar -czvf $(BUILD_DIR)/$(call GET_VERSIONED_NAME,tar.gz) -C $(RELEASE_DIR) .;
 
 clean:
