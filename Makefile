@@ -8,11 +8,11 @@ define GET_VERSIONED_NAME
 $(NAME).$(1).$(VERSION)
 endef
 
+SRC_DIR := ./src
 BUILD_DIR := ./build
 BIN_DIR := $(BUILD_DIR)/bin
-RELEASE_DIR := $(BUILD_DIR)/release
 OBJ_DIR := $(BUILD_DIR)/obj
-SRC_DIR := ./src
+RELEASE_DIR := $(BUILD_DIR)/release
 RELEASE_O := $(RELEASE_DIR)/$(NAME).o
 VERSIONED_RELEASE_ASSETS := $(call GET_VERSIONED_NAME,o) $(call GET_VERSIONED_NAME,a) $(call GET_VERSIONED_NAME,so)
 UNVERSIONED_RELEASE_ASSETS := $(NAME).o $(NAME).a $(NAME).so
@@ -28,7 +28,7 @@ DEPS_OBJS := $(wildcard $(DEPS_DIR)/*.o)
 
 APP_SRC_DIR := $(SRC_DIR)/app
 APP_OBJ_DIR := $(OBJ_DIR)/app
-APP_HDRS = $(wildcard $(APP_SRC_DIR)/*.h)
+APP_HDRS := $(wildcard $(APP_SRC_DIR)/*.h)
 APP_SRCS := $(wildcard $(APP_SRC_DIR)/*.c)
 APP_OBJS := $(patsubst $(APP_SRC_DIR)/%.c, $(APP_OBJ_DIR)/%.o, $(APP_SRCS))
 
@@ -44,7 +44,7 @@ app: $(APP_OBJS) $(RELEASE_O);
 
 LIB_SRC_DIR := $(SRC_DIR)/lib
 LIB_OBJ_DIR := $(OBJ_DIR)/lib
-LIB_HDRS = $(wildcard $(LIB_SRC_DIR)/*.h)
+LIB_HDRS := $(wildcard $(LIB_SRC_DIR)/*.h)
 LIB_SRCS := $(wildcard $(LIB_SRC_DIR)/*.c)
 LIB_OBJS := $(patsubst $(LIB_SRC_DIR)/%.c, $(LIB_OBJ_DIR)/%.o, $(LIB_SRCS))
 
@@ -77,7 +77,7 @@ $(NAME).so: $(LIB_OBJS) $(DEPS_OBJS);
 
 TEST_SRC_DIR := $(SRC_DIR)/test
 TEST_OBJ_DIR := $(OBJ_DIR)/test
-TEST_HDRS = $(wildcard $(TEST_SRC_DIR)/*.h)
+TEST_HDRS := $(wildcard $(TEST_SRC_DIR)/*.h)
 TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.c)
 TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.c, $(TEST_OBJ_DIR)/%.o, $(TEST_SRCS))
 
