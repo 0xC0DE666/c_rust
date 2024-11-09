@@ -6,4 +6,4 @@ build/release/*
 *.a
 *.so
 *.vim
-*.tar.gz
+*.tar.gz*
