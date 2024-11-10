@@ -2,8 +2,8 @@
 build/bin/*
 build/obj/*
 build/release/*
-*.o
-*.a
-*.so
+*.o*
+*.a*
+*.so*
 *.vim
 *.tar.gz*
