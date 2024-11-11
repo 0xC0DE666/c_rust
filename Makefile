@@ -28,8 +28,8 @@ all: clean $(UNVERSIONED_RELEASE_ASSETS) app test;
 
 APP_SRC_DIR := $(SRC_DIR)/app
 APP_OBJ_DIR := $(OBJ_DIR)/app
-APP_HDRS := $(wildcard $(APP_SRC_DIR)/*.h)
-APP_SRCS := $(wildcard $(APP_SRC_DIR)/*.c)
+APP_HDRS := $(shell find $(APP_SRC_DIR) -type f -name "*.h")
+APP_SRCS := $(shell find $(APP_SRC_DIR) -type f -name "*.c")
 APP_OBJS := $(patsubst $(APP_SRC_DIR)/%.c, $(APP_OBJ_DIR)/%.o, $(APP_SRCS))
 
 $(APP_OBJ_DIR)/%.o: $(APP_SRC_DIR)/%.c | $(APP_OBJ_DIR)
@@ -44,8 +44,8 @@ app: $(APP_OBJS) $(RELEASE_O);
 
 LIB_SRC_DIR := $(SRC_DIR)/lib
 LIB_OBJ_DIR := $(OBJ_DIR)/lib
-LIB_HDRS := $(wildcard $(LIB_SRC_DIR)/*.h)
-LIB_SRCS := $(wildcard $(LIB_SRC_DIR)/*.c)
+LIB_HDRS := $(shell find $(LIB_SRC_DIR) -type f -name "*.h")
+LIB_SRCS := $(shell find $(LIB_SRC_DIR) -type f -name "*.c")
 LIB_OBJS := $(patsubst $(LIB_SRC_DIR)/%.c, $(LIB_OBJ_DIR)/%.o, $(LIB_SRCS))
 
 $(LIB_OBJ_DIR)/%.o: $(LIB_SRC_DIR)/%.c | $(LIB_OBJ_DIR)
@@ -77,8 +77,8 @@ $(NAME).so: $(LIB_OBJS) $(DEPS_OBJS);
 
 TEST_SRC_DIR := $(SRC_DIR)/test
 TEST_OBJ_DIR := $(OBJ_DIR)/test
-TEST_HDRS := $(wildcard $(TEST_SRC_DIR)/*.h)
-TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.c)
+TEST_HDRS := $(shell find $(TEST_SRC_DIR) -type f -name "*.h")
+TEST_SRCS := $(shell find $(TEST_SRC_DIR) -type f -name "*.c")
 TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.c, $(TEST_OBJ_DIR)/%.o, $(TEST_SRCS))
 
 $(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c | $(TEST_OBJ_DIR)
