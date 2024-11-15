@@ -11,8 +11,11 @@
 // error_new
 // ####################
 Test(error_new, _1) {
-  Error* actual = error_new(1, "error");
-  Error expected = {1, "error"};
+  Error* actual = error_new(ERR_CODE_GENERAL, NULL);
+  cr_assert_eq(actual, NULL);
+
+  actual = error_new(ERR_CODE_GENERAL, "");
+  Error expected = {ERR_CODE_GENERAL, ""};
 
   cr_assert_eq(actual != NULL, true);
   cr_assert_eq(actual->code, expected.code);

@@ -1,12 +1,24 @@
-#include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 #include <string.h>
 
 #include "./c_errors.h"
 
 Error* error_new(int code, char* message) {
+  if (message == NULL) {
+    printf("%s\n", ERR_MSG_NULL_POINTER(error_new, message));
+    return NULL;
+  }
+
   Error* err = malloc(sizeof(Error));
-  *err = (Error){code, message};
+
+  if (err == NULL) {
+    perror(NULL);
+    return NULL;
+  }
+
+  *err = (Error) {code, message};
   return err;
 }
 
