@@ -1,38 +1,19 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 
 #include "./c_errors.h"
 
-Error* error_new(int code, char* message) {
-  if (message == NULL) {
-    printf("%s\n", ERR_MSG_NULL_POINTER(error_new, message));
-    return NULL;
-  }
-
-  Error* err = malloc(sizeof(Error));
-
-  if (err == NULL) {
-    perror(NULL);
-    return NULL;
-  }
-
-  *err = (Error) {code, message};
-  return err;
+Error error_new(int code, char* message) {
+  char* msg = message != NULL ? message : ERR_MSG_BLANK;
+  return (Error) {code, msg};
 }
 
-Error* std_error_new() {
+Error std_error_new() {
   return error_new(errno, strerror(errno));
 }
 
-void error_free(Error** error) {
-  free(*error);
-  *error = NULL;
-}
-
 Result result_ok(void* value) {
-  return (Result) { value, NULL };
+  return (Result) { value, error_new(SUC_CODE_GENERAL, SUC_MSG_GENERAL) };
 }
 
 Result result_error(int code, char* message) {
