@@ -1,3 +1,3 @@
-# c_errors
+# c_rust
 
-## Utils for custom error handling in C.
+## Rust like utils for C.

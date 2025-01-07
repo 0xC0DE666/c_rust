@@ -1,12 +1,14 @@
-#ifndef C_ERRORS_H
-#define C_ERRORS_H
+#ifndef RUSTY_C_H
+#define RUSTY_C_H
+
+#include <stdbool.h>
 
 #define ERR_CODE_GENERAL -1
 #define ERR_MSG_BLANK "No error message provided."
 #define ERR_MSG_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
-#define SUC_CODE_GENERAL 0
-#define SUC_MSG_GENERAL "Operation succeeded."
+#define OK_CODE_GENERAL 0
+#define OK_MSG_GENERAL "Operation succeeded."
 
 typedef struct Error {
   int code;
@@ -21,8 +23,10 @@ typedef struct Result {
   Error error;
 } Result;
 
-Result result_ok(void* value);
-Result result_error(int code, char* message);
+Result result_ok(void* const value);
+Result result_error(int const code, char* const message);
 Result result_std_error();
+bool result_is_ok(Result* const result);
+bool result_is_error(Result* const result);
 
 #endif

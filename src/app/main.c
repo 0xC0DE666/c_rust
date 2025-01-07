@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../lib/c_errors.h"
+#include "../lib/c_rust.h"
 
 int main() {
   printf("c_errors\n");

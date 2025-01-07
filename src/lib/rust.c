@@ -1,7 +1,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "./c_errors.h"
+#include "./c_rust.h"
 
 Error error_new(int code, char* message) {
   char* msg = message != NULL ? message : ERR_MSG_BLANK;
@@ -13,7 +13,7 @@ Error std_error_new() {
 }
 
 Result result_ok(void* value) {
-  return (Result) { value, error_new(SUC_CODE_GENERAL, SUC_MSG_GENERAL) };
+  return (Result) { value, error_new(OK_CODE_GENERAL, OK_MSG_GENERAL) };
 }
 
 Result result_error(int code, char* message) {

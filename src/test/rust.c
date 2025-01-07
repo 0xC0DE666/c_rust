@@ -5,7 +5,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "../lib/c_errors.h"
+#include "../lib/c_rust.h"
 #include "./utils.h"
 
 // ####################
@@ -40,10 +40,10 @@ Test(std_error_new, _1) {
 Test(result_ok, _1) {
   char* msg = "ok";
   Result actual = result_ok(&msg);
-  Result expected = (Result) {&msg, {SUC_CODE_GENERAL, SUC_MSG_GENERAL}};
+  Result expected = (Result) {&msg, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
 
   cr_assert_eq(actual.error.code, 0);
-  cr_assert_eq(strcmp(actual.error.message, SUC_MSG_GENERAL), 0);
+  cr_assert_eq(strcmp(actual.error.message, OK_MSG_GENERAL), 0);
   cr_assert_eq(actual.ok != NULL, true);
   cr_assert_eq(strcmp(actual.ok, expected.ok), 0);
 }
