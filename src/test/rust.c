@@ -9,7 +9,7 @@
 #include "./utils.h"
 
 // ####################
-// ERROR
+// RESULT
 // ####################
 Test(error_new, _1) {
   Error actual1 = error_new(ERR_CODE_GENERAL, NULL);
@@ -31,13 +31,19 @@ Test(std_error_new, _1) {
   cr_assert_eq(strcmp(actual.message, expected.message), 0);
 }
 
-// ####################
-// RESULT
-// ####################
 Test(result_ok, _1) {
   char* msg = "ok";
   Result actual = result_ok(&msg);
   Result expected = (Result) {&msg, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
+
+  cr_assert_eq(result_is_ok(&actual), true);
+  cr_assert_eq(result_is_error(&actual), false);
+  cr_assert_eq(strcmp(actual.ok, expected.ok), 0);
+}
+
+Test(result_ok, _2) {
+  Result actual = result_ok(&OK);
+  Result expected = (Result) {&OK, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
 
   cr_assert_eq(result_is_ok(&actual), true);
   cr_assert_eq(result_is_error(&actual), false);

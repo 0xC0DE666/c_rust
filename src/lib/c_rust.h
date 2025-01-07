@@ -11,21 +11,21 @@
 #define OK_MSG_GENERAL "Operation succeeded."
 
 // ####################
-// ERROR
+// RESULT
 // ####################
+typedef struct {} Ok;
+static const Ok OK;
+
 typedef struct Error {
   const int code;
   const char* message;
 } Error;
 
-extern const Error NO_ERROR;
+static const Error NO_ERROR;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
 
-// ####################
-// RESULT
-// ####################
 typedef struct Result {
   void* ok;
   const Error error;

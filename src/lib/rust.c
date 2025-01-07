@@ -4,9 +4,10 @@
 #include "./c_rust.h"
 
 // ####################
-// ERROR
+// RESULT
 // ####################
-const Error NO_ERROR = (Error) {OK_CODE_GENERAL, ""};
+static const Ok OK = (Ok) {};
+static const Error NO_ERROR = (Error) {OK_CODE_GENERAL, ""};
 
 Error error_new(const int code, const char* message) {
   return (Error) {code, message != NULL ? message : ERR_MSG_BLANK};
@@ -16,9 +17,6 @@ Error std_error_new() {
   return error_new(errno, strerror(errno));
 }
 
-// ####################
-// RESULT
-// ####################
 Result result_ok(void* value) {
   return (Result) { value, NO_ERROR };
 }
