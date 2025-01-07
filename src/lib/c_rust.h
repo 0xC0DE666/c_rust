@@ -23,10 +23,10 @@ typedef struct Result {
   Error error;
 } Result;
 
-Result result_ok(void* const value);
-Result result_error(int const code, char* const message);
+Result result_new_ok(void* value);
+Result result_new_error(int code, char* message);
 Result result_std_error();
-bool result_is_ok(Result* const result);
-bool result_is_error(Result* const result);
+bool result_is_ok(const Result* result);
+bool result_is_error(const Result* result);
 
 #endif
