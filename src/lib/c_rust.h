@@ -32,6 +32,7 @@ typedef struct Result {
 } Result;
 
 Result result_ok(void* value);
+Result result_unit();
 Result result_error(const int code, const char* message);
 Result result_std_error();
 bool result_is_ok(const Result* result);

@@ -21,6 +21,10 @@ Result result_ok(void* value) {
   return (Result) { value, NO_ERROR };
 }
 
+Result result_unit(void* value) {
+  return (Result) { &OK, NO_ERROR };
+}
+
 Result result_error(const int code, const char* message) {
   return (Result) { NULL, error_new(code, message) };
 }

@@ -42,7 +42,7 @@ Test(result_ok, _1) {
 }
 
 Test(result_ok, _2) {
-  Result actual = result_ok(&OK);
+  Result actual = result_unit();
   Result expected = (Result) {&OK, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
 
   cr_assert_eq(result_is_ok(&actual), true);
