@@ -40,12 +40,17 @@ bool result_is_error(const Result* result);
 // ####################
 // OPTION
 // ####################
+
+typedef struct {} None;
+
+static const None NONE;
+
 typedef struct Option {
-  void* some;
-  void* none;
+  const void* some;
+  const None* none;
 } Option;
 
-Option option_some(void* value);
+Option option_some(const void* value);
 Option option_none();
 bool option_is_some(const Option* option);
 bool option_is_none(const Option* option);

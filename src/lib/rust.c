@@ -42,12 +42,15 @@ bool result_is_error(const Result* result) {
 // ####################
 // OPTION
 // ####################
-Option option_some(void* value) {
+
+static const None NONE = {};
+
+Option option_some(const void* value) {
   return (Option) { value, NULL };
 }
 
 Option option_none() {
-  return (Option) { NULL, NULL };
+  return (Option) { NULL, &NONE };
 }
 
 bool option_is_some(const Option* option) {
@@ -55,5 +58,5 @@ bool option_is_some(const Option* option) {
 }
 
 bool option_is_none(const Option* option) {
-  return option->some == NULL && option->none == NULL;
+  return option->some == NULL && option->none == &NONE;
 }
