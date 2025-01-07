@@ -47,7 +47,7 @@ Test(result_ok, _2) {
 
   cr_assert_eq(result_is_ok(&actual), true);
   cr_assert_eq(result_is_error(&actual), false);
-  cr_assert_eq(strcmp(actual.ok, expected.ok), 0);
+  cr_assert_eq(actual.ok, expected.ok);
 }
 
 Test(result_error, _1) {

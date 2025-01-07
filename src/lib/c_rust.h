@@ -14,14 +14,14 @@
 // RESULT
 // ####################
 typedef struct {} Ok;
-static const Ok OK;
+extern const Ok OK;
 
 typedef struct Error {
   const int code;
   const char* message;
 } Error;
 
-static const Error NO_ERROR;
+extern const Error NO_ERROR;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
@@ -44,7 +44,7 @@ bool result_is_error(const Result* result);
 
 typedef struct {} None;
 
-static const None NONE;
+extern const None NONE;
 
 typedef struct Option {
   void* some;
