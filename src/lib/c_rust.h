@@ -10,6 +10,9 @@
 #define OK_CODE_GENERAL 0
 #define OK_MSG_GENERAL "Operation succeeded."
 
+// ####################
+// ERROR
+// ####################
 typedef struct Error {
   int code;
   char* message;
@@ -18,15 +21,31 @@ typedef struct Error {
 Error error_new(int code, char* message);
 Error std_error_new();
 
+// ####################
+// RESULT
+// ####################
 typedef struct Result {
   void* ok;
   Error error;
 } Result;
 
-Result result_new_ok(void* value);
-Result result_new_error(int code, char* message);
+Result result_ok(void* value);
+Result result_error(int code, char* message);
 Result result_std_error();
 bool result_is_ok(const Result* result);
 bool result_is_error(const Result* result);
+
+// ####################
+// OPTION
+// ####################
+typedef struct Option {
+  void* some;
+  void* none;
+} Option;
+
+Option option_some(void* value);
+Option option_none();
+bool option_is_some(const Option* option);
+bool option_is_none(const Option* option);
 
 #endif
