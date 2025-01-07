@@ -37,6 +37,10 @@ bool result_is_ok(const Result* result) {
   return result->ok != NULL && result->error.code == OK_CODE_GENERAL;
 }
 
+bool result_is_unit(const Result* result) {
+  return result->ok == &OK && result->error.code == OK_CODE_GENERAL;
+}
+
 bool result_is_error(const Result* result) {
   return result->ok == NULL && result->error.code != OK_CODE_GENERAL;
 }

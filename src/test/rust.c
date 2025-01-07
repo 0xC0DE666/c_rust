@@ -37,17 +37,17 @@ Test(result_ok, _1) {
   Result expected = (Result) {&msg, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
 
   cr_assert_eq(result_is_ok(&actual), true);
+  cr_assert_eq(result_is_unit(&actual), false);
   cr_assert_eq(result_is_error(&actual), false);
   cr_assert_eq(strcmp(actual.ok, expected.ok), 0);
 }
 
 Test(result_ok, _2) {
   Result actual = result_unit();
-  Result expected = (Result) {&OK, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
 
   cr_assert_eq(result_is_ok(&actual), true);
+  cr_assert_eq(result_is_unit(&actual), true);
   cr_assert_eq(result_is_error(&actual), false);
-  cr_assert_eq(actual.ok, expected.ok);
 }
 
 Test(result_error, _1) {
