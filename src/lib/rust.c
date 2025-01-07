@@ -19,7 +19,7 @@ Error std_error_new() {
 // ####################
 // RESULT
 // ####################
-Result result_ok(const void* value) {
+Result result_ok(void* value) {
   return (Result) { value, NO_ERROR };
 }
 
@@ -45,7 +45,7 @@ bool result_is_error(const Result* result) {
 
 static const None NONE = {};
 
-Option option_some(const void* value) {
+Option option_some(void* value) {
   return (Option) { value, NULL };
 }
 

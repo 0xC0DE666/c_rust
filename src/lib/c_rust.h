@@ -27,11 +27,11 @@ Error std_error_new();
 // RESULT
 // ####################
 typedef struct Result {
-  const void* ok;
+  void* ok;
   const Error error;
 } Result;
 
-Result result_ok(const void* value);
+Result result_ok(void* value);
 Result result_error(const int code, const char* message);
 Result result_std_error();
 bool result_is_ok(const Result* result);
@@ -46,11 +46,11 @@ typedef struct {} None;
 static const None NONE;
 
 typedef struct Option {
-  const void* some;
+  void* some;
   const None* none;
 } Option;
 
-Option option_some(const void* value);
+Option option_some(void* value);
 Option option_none();
 bool option_is_some(const Option* option);
 bool option_is_none(const Option* option);
