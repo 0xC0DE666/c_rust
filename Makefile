@@ -50,7 +50,7 @@ LIB_SRCS := $(shell find $(LIB_SRC_DIR) -type f -name "*.c")
 LIB_OBJS := $(patsubst $(LIB_SRC_DIR)/%.c, $(LIB_OBJ_DIR)/%.o, $(LIB_SRCS))
 
 $(LIB_OBJ_DIR)/%.o: $(LIB_SRC_DIR)/%.c | $(LIB_OBJ_DIR)
-	$(CC) $(C_FLAGS) -c $< -o $@
+	$(CC) $(C_FLAGS) -fPIC -c $< -o $@
 
 # VERSIONED
 $(call GET_VERSIONED_NAME,o): $(LIB_OBJS) $(DEPS_OBJS);
