@@ -12,15 +12,15 @@
 // ERROR
 // ####################
 Test(error_new, _1) {
-  Error actual = error_new(ERR_CODE_GENERAL, NULL);
-  cr_assert_eq(actual.code, ERR_CODE_GENERAL);
-  cr_assert_eq(strcmp(actual.message, ERR_MSG_BLANK), 0);
+  Error actual1 = error_new(ERR_CODE_GENERAL, NULL);
+  cr_assert_eq(actual1.code, ERR_CODE_GENERAL);
+  cr_assert_eq(strcmp(actual1.message, ERR_MSG_BLANK), 0);
 
-  actual = error_new(ERR_CODE_GENERAL, "error");
+  Error actual2 = error_new(ERR_CODE_GENERAL, "error");
   Error expected = {ERR_CODE_GENERAL, "error"};
 
-  cr_assert_eq(actual.code, expected.code);
-  cr_assert_eq(strcmp(actual.message, expected.message), 0);
+  cr_assert_eq(actual2.code, expected.code);
+  cr_assert_eq(strcmp(actual2.message, expected.message), 0);
 }
 
 Test(std_error_new, _1) {

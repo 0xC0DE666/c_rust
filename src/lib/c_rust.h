@@ -14,25 +14,25 @@
 // ERROR
 // ####################
 typedef struct Error {
-  int code;
-  char* message;
+  const int code;
+  const char* message;
 } Error;
 
 extern const Error NO_ERROR;
 
-Error error_new(int code, char* message);
+Error error_new(const int code, const char* message);
 Error std_error_new();
 
 // ####################
 // RESULT
 // ####################
 typedef struct Result {
-  void* ok;
-  Error error;
+  const void* ok;
+  const Error error;
 } Result;
 
-Result result_ok(void* value);
-Result result_error(int code, char* message);
+Result result_ok(const void* value);
+Result result_error(const int code, const char* message);
 Result result_std_error();
 bool result_is_ok(const Result* result);
 bool result_is_error(const Result* result);
