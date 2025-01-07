@@ -6,6 +6,8 @@
 // ####################
 // ERROR
 // ####################
+const Error NO_ERROR = (Error) {OK_CODE_GENERAL, ""};
+
 Error error_new(int code, char* message) {
   return (Error) {code, message != NULL ? message : ERR_MSG_BLANK};
 }
@@ -18,7 +20,7 @@ Error std_error_new() {
 // RESULT
 // ####################
 Result result_ok(void* value) {
-  return (Result) { value, error_new(OK_CODE_GENERAL, OK_MSG_GENERAL) };
+  return (Result) { value, NO_ERROR };
 }
 
 Result result_error(int code, char* message) {

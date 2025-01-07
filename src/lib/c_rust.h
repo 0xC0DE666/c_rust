@@ -18,6 +18,8 @@ typedef struct Error {
   char* message;
 } Error;
 
+extern const Error NO_ERROR;
+
 Error error_new(int code, char* message);
 Error std_error_new();
 
