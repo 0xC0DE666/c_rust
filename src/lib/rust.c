@@ -48,7 +48,6 @@ bool result_is_error(const Result* result) {
 // ####################
 // OPTION
 // ####################
-
 const None NONE = {};
 
 Option option_some(void* value) {
