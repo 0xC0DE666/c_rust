@@ -6,7 +6,7 @@
 // ####################
 // RESULT
 // ####################
-const Ok OK_UNIT = (Ok) {OK_CODE_UNIT, OK_MSG_UNIT};
+const Ok OK_VOID = (Ok) {OK_CODE_VOID, OK_MSG_VOID};
 const Ok OK_NONE = (Ok) {OK_CODE_NONE, OK_MSG_NONE};
 
 Ok ok_new(const size_t size, void* value) {
@@ -27,8 +27,8 @@ Result result_ok(size_t size, void* value) {
   return (Result) { ok_new(size, value), ERROR_NONE };
 }
 
-Result result_unit() {
-  return (Result) { OK_UNIT, ERROR_NONE };
+Result result_void() {
+  return (Result) { OK_VOID, ERROR_NONE };
 }
 
 Result result_error(const int code, const char* message) {
@@ -42,22 +42,22 @@ Result result_std_error() {
 bool result_is_ok(const Result* result) {
   return result->ok.size > 0 &&
     result->ok.value != NULL &&
-    result->error.code == ERR_CODE_NONE &&
-    strcmp(result->error.message, ERR_MSG_NONE) == 0;
+    result->error.code == ERROR_NONE.code &&
+    strcmp(result->error.message, ERROR_NONE.message) == 0;
 }
 
-bool result_is_unit(const Result* result) {
-  return result->ok.size == OK_UNIT.size &&
-    strcmp((char*) result->ok.value, OK_MSG_UNIT) == 0 &&
-    result->error.code == ERR_CODE_NONE &&
-    strcmp(result->error.message, ERR_MSG_NONE) == 0;
+bool result_is_void(const Result* result) {
+  return result->ok.size == OK_VOID.size &&
+    strcmp((char*) result->ok.value, (char*) OK_VOID.value) == 0 &&
+    result->error.code == ERROR_NONE.code &&
+    strcmp(result->error.message, ERROR_NONE.message) == 0;
 }
 
 bool result_is_error(const Result* result) {
   return result->ok.size == OK_NONE.size &&
-    strcmp((char*) result->ok.value, OK_MSG_NONE) == 0 &&
-    result->error.code != ERR_CODE_NONE &&
-    strcmp(result->error.message, ERR_MSG_NONE) != 0;
+    strcmp((char*) result->ok.value, (char*) OK_NONE.value) == 0 &&
+    result->error.code != ERROR_NONE.code &&
+    strcmp(result->error.message, ERROR_NONE.message) != 0;
 }
 
 // ####################
