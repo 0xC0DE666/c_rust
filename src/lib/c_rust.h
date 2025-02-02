@@ -3,18 +3,31 @@
 
 #include <stdbool.h>
 
+// TODO: Maybe rename NONE to VOID/NULL?
 #define ERR_CODE_GENERAL -1
+#define ERR_CODE_NONE 0
+
 #define ERR_MSG_BLANK "No error message provided."
+#define ERR_MSG_NONE ""
 #define ERR_MSG_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
 #define OK_CODE_GENERAL 0
+#define OK_CODE_NONE 0
+
 #define OK_MSG_GENERAL "Operation succeeded."
+#define OK_MSG_NONE ""
 
 // ####################
 // RESULT
 // ####################
-typedef struct {} Ok;
-extern const Ok OK;
+typedef struct Ok {
+  size_t size;
+  void* value;
+} Ok;
+extern const Ok OK_UNIT;
+extern const Ok OK_NONE;
+
+Ok new_ok(const size_t size, void* value);
 
 typedef struct Error {
   const int code;
@@ -27,11 +40,11 @@ Error error_new(const int code, const char* message);
 Error std_error_new();
 
 typedef struct Result {
-  void* ok;
+  const Ok ok;
   const Error error;
 } Result;
 
-Result result_ok(void* value);
+Result result_ok(size_t size, void* value);
 Result result_unit();
 Result result_error(const int code, const char* message);
 Result result_std_error();
