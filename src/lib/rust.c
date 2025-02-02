@@ -6,7 +6,7 @@
 // ####################
 // RESULT
 // ####################
-const Ok OK_UNIT = (Ok) {OK_CODE_GENERAL, OK_MSG_GENERAL};
+const Ok OK_UNIT = (Ok) {OK_CODE_UNIT, OK_MSG_UNIT};
 const Ok OK_NONE = (Ok) {OK_CODE_NONE, OK_MSG_NONE};
 
 Ok ok_new(const size_t size, void* value) {
@@ -48,7 +48,7 @@ bool result_is_ok(const Result* result) {
 
 bool result_is_unit(const Result* result) {
   return result->ok.size == OK_UNIT.size &&
-    strcmp((char*) result->ok.value, OK_MSG_GENERAL) == 0 &&
+    strcmp((char*) result->ok.value, OK_MSG_UNIT) == 0 &&
     result->error.code == ERR_CODE_NONE &&
     strcmp(result->error.message, ERR_MSG_NONE) == 0;
 }

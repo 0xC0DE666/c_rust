@@ -12,9 +12,11 @@
 #define ERR_MSG_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
 #define OK_CODE_GENERAL 0
+#define OK_CODE_UNIT 0
 #define OK_CODE_NONE 0
 
 #define OK_MSG_GENERAL "Operation succeeded."
+#define OK_MSG_UNIT ""
 #define OK_MSG_NONE ""
 
 // ####################
