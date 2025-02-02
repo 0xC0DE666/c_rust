@@ -9,7 +9,7 @@
 const Ok OK_UNIT = (Ok) {OK_CODE_GENERAL, OK_MSG_GENERAL};
 const Ok OK_NONE = (Ok) {OK_CODE_NONE, OK_MSG_NONE};
 
-Ok new_ok(const size_t size, void* value) {
+Ok ok_new(const size_t size, void* value) {
   return (Ok) {size, value};
 }
 
@@ -24,7 +24,7 @@ Error std_error_new() {
 }
 
 Result result_ok(size_t size, void* value) {
-  return (Result) { new_ok(size, value), ERROR_NONE };
+  return (Result) { ok_new(size, value), ERROR_NONE };
 }
 
 Result result_unit() {

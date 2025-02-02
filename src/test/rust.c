@@ -13,7 +13,7 @@
 // ####################
 Test(ok_new, _1) {
   char* value = "ok";
-  Ok actual = new_ok(sizeof(*value), value);
+  Ok actual = ok_new(sizeof(*value), value);
   Ok expected = {sizeof(*value), value};
 
   cr_assert_eq(actual.size, expected.size);
@@ -40,25 +40,29 @@ Test(std_error_new, _1) {
   cr_assert_eq(strcmp(actual.message, expected.message), 0);
 }
 
-// Test(result_ok, _1) {
-//   char* msg = "ok";
-//   Result actual = result_ok(&msg);
-//   Result expected = (Result) {&msg, {OK_CODE_GENERAL, OK_MSG_GENERAL}};
-// 
-//   cr_assert_eq(result_is_ok(&actual), true);
-//   cr_assert_eq(result_is_unit(&actual), false);
-//   cr_assert_eq(result_is_error(&actual), false);
-//   cr_assert_eq(strcmp(actual.ok, expected.ok), 0);
-// }
-// 
-// Test(result_ok, _2) {
-//   Result actual = result_unit();
-// 
-//   cr_assert_eq(result_is_ok(&actual), true);
-//   cr_assert_eq(result_is_unit(&actual), true);
-//   cr_assert_eq(result_is_error(&actual), false);
-// }
-// 
+Test(result_ok, _1) {
+  char* msg = "ok";
+  size_t size = sizeof(*msg);
+  Result actual = result_ok(size, msg);
+  Result expected = (Result) {ok_new(size, msg), ERROR_NONE};
+
+  cr_assert(result_is_ok(&actual));
+  cr_assert_eq(actual.ok.size, size);
+  cr_assert_eq(strcmp((char*) actual.ok.value, (char*) expected.ok.value), 0);
+  cr_assert_eq(actual.error.code, ERROR_NONE.code);
+  cr_assert_eq(strcmp(actual.error.message, ERROR_NONE.message), 0);
+}
+
+Test(result_unit, _1) {
+  Result actual = result_unit();
+
+  cr_assert(result_is_unit(&actual));
+  cr_assert_eq(actual.ok.size, OK_UNIT.size);
+  cr_assert_eq(strcmp((char*) actual.ok.value, (char*) OK_UNIT.value), 0);
+  cr_assert_eq(actual.error.code, ERROR_NONE.code);
+  cr_assert_eq(strcmp(actual.error.message, ERROR_NONE.message), 0);
+}
+
 // Test(result_error, _1) {
 //   Error err = error_new(ERR_CODE_GENERAL, "error");
 //   Result actual = result_error(ERR_CODE_GENERAL, "error");

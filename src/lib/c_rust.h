@@ -27,14 +27,14 @@ typedef struct Ok {
 extern const Ok OK_UNIT;
 extern const Ok OK_NONE;
 
-Ok new_ok(const size_t size, void* value);
+Ok ok_new(const size_t size, void* value);
 
 typedef struct Error {
   const int code;
   const char* message;
 } Error;
 
-extern const Error NO_ERROR;
+extern const Error ERROR_NONE;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
