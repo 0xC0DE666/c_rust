@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "../lib/c_rust.h"
 
@@ -22,8 +23,7 @@ Error oh_snap() {
   return error_new(99, "Oh shit!\n");
 }
 
-int main() {
-  printf("%lu\n", OK_SIZE_VOID);
+void old_main() {
   printf("c_rust\n");
   printf("%lu\n", sizeof("abc\n"));
   char* msg = "abc\n";
@@ -33,5 +33,28 @@ int main() {
 
   Error err = oh_snap();
   printf("%s\n", err.message);
+}
+
+
+typedef struct Point {
+  int x;
+  int y;
+} Point;
+
+Result point_new(int x, int y) {
+  Point* p;
+  p = malloc(sizeof(*p));
+  p->x = x;
+  p->y = y;
+  return result_ok(p);
+}
+
+int main() {
+  printf("%lu\n", sizeof(Ok));
+  Result res = point_new(2, 2);
+  Point* p = res.ok.value;
+  printf("(%d, %d)\n", p->x, p->y);
+  free(p);
+
   return 0;
 }

@@ -6,11 +6,11 @@
 // ####################
 // RESULT
 // ####################
-const Ok OK_VOID = (Ok) {OK_SIZE_VOID, OK_VALUE_VOID};
-const Ok OK_NULL = (Ok) {OK_SIZE_NULL, OK_VALUE_NULL};
+const Ok OK_VOID = (Ok) {OK_VALUE_VOID};
+const Ok OK_NULL = (Ok) {OK_VALUE_NULL};
 
-Ok ok_new(const size_t size, void* value) {
-  return (Ok) {size, value};
+Ok ok_new(void* value) {
+  return (Ok) {value};
 }
 
 const Error ERROR_NULL = (Error) {ERROR_CODE_NULL, ERROR_MESSAGE_NULL};
@@ -23,8 +23,8 @@ Error std_error_new() {
   return error_new(errno, strerror(errno));
 }
 
-Result result_ok(size_t size, void* value) {
-  return (Result) {ok_new(size, value), ERROR_NULL};
+Result result_ok(void* value) {
+  return (Result) {ok_new(value), ERROR_NULL};
 }
 
 Result result_void() {
@@ -40,22 +40,19 @@ Result result_std_error() {
 }
 
 bool result_is_ok(const Result* result) {
-  return result->ok.size > OK_NULL.size &&
-    result->ok.value != OK_NULL.value &&
+  return result->ok.value != OK_NULL.value &&
     result->error.code == ERROR_NULL.code &&
     result->error.message == ERROR_NULL.message;
 }
 
 bool result_is_void(const Result* result) {
-  return result->ok.size == OK_VOID.size &&
-    strcmp((char*) result->ok.value, (char*) OK_VOID.value) == 0 &&
+  return strcmp((char*) result->ok.value, (char*) OK_VOID.value) == 0 &&
     result->error.code == ERROR_NULL.code &&
     result->error.message == ERROR_NULL.message;
 }
 
 bool result_is_error(const Result* result) {
-  return result->ok.size == OK_NULL.size &&
-    result->ok.value == OK_NULL.value &&
+  return result->ok.value == OK_NULL.value &&
     result->error.code != ERROR_NULL.code &&
     result->error.message != ERROR_NULL.message;
 }
@@ -63,17 +60,17 @@ bool result_is_error(const Result* result) {
 // ####################
 // OPTION
 // ####################
-Some some_new(size_t size, void* value) {
-  return (Some) {size, value};
+Some some_new(void* value) {
+  return (Some) {value};
 }
 
-const Some SOME_NULL = {SOME_SIZE_NULL, SOME_VALUE_NULL};
+const Some SOME_NULL = {SOME_VALUE_NULL};
 
 const None NONE = {};
 const None NONE_NULL = {};
 
-Option option_some(size_t size, void* value) {
-  return (Option) {some_new(size, value), NONE_NULL};
+Option option_some(void* value) {
+  return (Option) {some_new(value), NONE_NULL};
 }
 
 Option option_none() {
@@ -81,9 +78,9 @@ Option option_none() {
 }
 
 bool option_is_some(const Option* option) {
-  return option->some.size > SOME_NULL.size && option->some.value != SOME_NULL.value;
+  return option->some.value != SOME_NULL.value;
 }
 
 bool option_is_none(const Option* option) {
-  return option->some.size == SOME_NULL.size && option->some.value == SOME_NULL.value;
+  return option->some.value == SOME_NULL.value;
 }
