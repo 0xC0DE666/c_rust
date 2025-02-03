@@ -1,5 +1,5 @@
-#ifndef RUSTY_C_H
-#define RUSTY_C_H
+#ifndef C_RUST_H
+#define C_RUST_H
 
 #include <stdbool.h>
 
