@@ -6,19 +6,19 @@
 // TODO: Maybe rename NONE to VOID/NULL?
 #define ERR_CODE_GENERAL -1
 #define ERR_CODE_NONE 0
-
 #define ERR_MSG_GENERAL "An unexpected error occurd."
-#define ERR_MSG_BLANK "No error message provided."
 #define ERR_MSG_NONE ""
 #define ERR_MSG_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
 #define OK_CODE_GENERAL 0
 #define OK_CODE_VOID 0
-#define OK_CODE_NONE 0
-
+#define OK_SIZE_NONE 0
 #define OK_MSG_GENERAL "Operation succeeded."
 #define OK_MSG_VOID ""
-#define OK_MSG_NONE ""
+#define OK_VALUE_NONE NULL
+
+#define SOME_SIZE_NONE 0
+#define SOME_VALUE_NONE NULL
 
 // ####################
 // RESULT
@@ -58,17 +58,26 @@ bool result_is_error(const Result* result);
 // ####################
 // OPTION
 // ####################
+typedef struct Some {
+  size_t size;
+  void* value;
+} Some;
+
+extern const Some SOME_NONE;
+
+Some some_new(size_t size, void* value);
 
 typedef struct {} None;
 
 extern const None NONE;
+extern const None NONE_SOME;
 
 typedef struct Option {
-  void* some;
-  const None* none;
+  const Some some;
+  const None none;
 } Option;
 
-Option option_some(void* value);
+Option option_some(size_t size, void* value);
 Option option_none();
 bool option_is_some(const Option* option);
 bool option_is_none(const Option* option);

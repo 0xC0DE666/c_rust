@@ -22,14 +22,16 @@ Test(ok_new, _1) {
 
 Test(error_new, _1) {
   Error actual1 = error_new(ERR_CODE_GENERAL, NULL);
-  cr_assert_eq(actual1.code, ERR_CODE_GENERAL);
-  cr_assert_eq(strcmp(actual1.message, ERR_MSG_BLANK), 0);
+  Error expected1 = {ERR_CODE_GENERAL, ERR_MSG_GENERAL};
+
+  cr_assert_eq(actual1.code, expected1.code);
+  cr_assert_eq(strcmp(actual1.message, expected1.message), 0);
 
   Error actual2 = error_new(ERR_CODE_GENERAL, ERR_MSG_GENERAL);
-  Error expected = {ERR_CODE_GENERAL, ERR_MSG_GENERAL};
+  Error expected2 = {ERR_CODE_GENERAL, ERR_MSG_GENERAL};
 
-  cr_assert_eq(actual2.code, expected.code);
-  cr_assert_eq(strcmp(actual2.message, expected.message), 0);
+  cr_assert_eq(actual2.code, expected2.code);
+  cr_assert_eq(strcmp(actual2.message, expected2.message), 0);
 }
 
 Test(std_error_new, _1) {
@@ -64,13 +66,12 @@ Test(result_void, _1) {
 }
 
 Test(result_error, _1) {
-  Error err = error_new(ERR_CODE_GENERAL, ERR_MSG_GENERAL);
   Result actual = result_error(ERR_CODE_GENERAL, ERR_MSG_GENERAL);
-  Result expected = {OK_NONE, err};
+  Result expected = {OK_NONE, error_new(ERR_CODE_GENERAL, ERR_MSG_GENERAL)};
 
   cr_assert(result_is_error(&actual));
   cr_assert_eq(actual.ok.size, OK_NONE.size);
-  cr_assert_eq(strcmp((char*) actual.ok.value, (char*) OK_NONE.value), 0);
+  cr_assert_eq(actual.ok.value, OK_NONE.value);
   cr_assert_eq(actual.error.code, expected.error.code);
   cr_assert_eq(strcmp(actual.error.message, expected.error.message), 0);
 }
@@ -82,7 +83,7 @@ Test(result_std_error, _1) {
 
   cr_assert(result_is_error(&actual));
   cr_assert_eq(actual.ok.size, OK_NONE.size);
-  cr_assert_eq(strcmp((char*) actual.ok.value, (char*) OK_NONE.value), 0);
+  cr_assert_eq(actual.ok.value, OK_NONE.value);
   cr_assert_eq(actual.error.code, expected.error.code);
   cr_assert_eq(strcmp(actual.error.message, expected.error.message), 0);
 }
