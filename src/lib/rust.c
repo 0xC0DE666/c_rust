@@ -40,8 +40,8 @@ Result result_std_error() {
 }
 
 bool result_is_ok(const Result* result) {
-  return result->ok.size > 0 &&
-    result->ok.value != NULL &&
+  return result->ok.size > OK_NULL.size &&
+    result->ok.value != OK_NULL.value &&
     result->error.code == ERROR_NULL.code &&
     result->error.message == ERROR_NULL.message;
 }
@@ -81,7 +81,7 @@ Option option_none() {
 }
 
 bool option_is_some(const Option* option) {
-  return option->some.size > 0 && option->some.value != NULL;
+  return option->some.size > SOME_NULL.size && option->some.value != SOME_NULL.value;
 }
 
 bool option_is_none(const Option* option) {
