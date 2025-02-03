@@ -6,17 +6,17 @@
 // ####################
 // RESULT
 // ####################
-const Ok OK_VOID = (Ok) {OK_CODE_VOID, OK_MSG_VOID};
+const Ok OK_VOID = (Ok) {OK_SIZE_VOID, OK_VALUE_VOID};
 const Ok OK_NONE = (Ok) {OK_SIZE_NONE, OK_VALUE_NONE};
 
 Ok ok_new(const size_t size, void* value) {
   return (Ok) {size, value};
 }
 
-const Error ERROR_NONE = (Error) {ERR_CODE_NONE, ERR_MSG_NONE};
+const Error ERROR_NONE = (Error) {ERROR_CODE_NONE, ERROR_MESSAGE_NONE};
 
 Error error_new(const int code, const char* message) {
-  return (Error) {code, message != NULL ? message : ERR_MSG_GENERAL};
+  return (Error) {code, message != NULL ? message : ERROR_MESSAGE_GENERAL};
 }
 
 Error std_error_new() {

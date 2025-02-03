@@ -12,7 +12,7 @@
 // RESULT
 // ####################
 Test(ok_new, _1) {
-  char* value = OK_MSG_GENERAL;
+  char* value = "ok";
   Ok actual = ok_new(sizeof(*value), value);
   Ok expected = {sizeof(*value), value};
 
@@ -21,14 +21,14 @@ Test(ok_new, _1) {
 }
 
 Test(error_new, _1) {
-  Error actual1 = error_new(ERR_CODE_GENERAL, NULL);
-  Error expected1 = {ERR_CODE_GENERAL, ERR_MSG_GENERAL};
+  Error actual1 = error_new(ERROR_CODE_GENERAL, NULL);
+  Error expected1 = {ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL};
 
   cr_assert_eq(actual1.code, expected1.code);
   cr_assert_eq(strcmp(actual1.message, expected1.message), 0);
 
-  Error actual2 = error_new(ERR_CODE_GENERAL, ERR_MSG_GENERAL);
-  Error expected2 = {ERR_CODE_GENERAL, ERR_MSG_GENERAL};
+  Error actual2 = error_new(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL);
+  Error expected2 = {ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL};
 
   cr_assert_eq(actual2.code, expected2.code);
   cr_assert_eq(strcmp(actual2.message, expected2.message), 0);
@@ -43,10 +43,10 @@ Test(std_error_new, _1) {
 }
 
 Test(result_ok, _1) {
-  char* msg = OK_MSG_GENERAL;
-  size_t size = sizeof(*msg);
-  Result actual = result_ok(size, msg);
-  Result expected = (Result) {ok_new(size, msg), ERROR_NONE};
+  char* value = "ok";
+  size_t size = sizeof(*value);
+  Result actual = result_ok(size, value);
+  Result expected = (Result) {ok_new(size, value), ERROR_NONE};
 
   cr_assert(result_is_ok(&actual));
   cr_assert_eq(actual.ok.size, size);
@@ -66,8 +66,8 @@ Test(result_void, _1) {
 }
 
 Test(result_error, _1) {
-  Result actual = result_error(ERR_CODE_GENERAL, ERR_MSG_GENERAL);
-  Result expected = {OK_NONE, error_new(ERR_CODE_GENERAL, ERR_MSG_GENERAL)};
+  Result actual = result_error(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL);
+  Result expected = {OK_NONE, error_new(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL)};
 
   cr_assert(result_is_error(&actual));
   cr_assert_eq(actual.ok.size, OK_NONE.size);

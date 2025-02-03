@@ -4,17 +4,15 @@
 #include <stdbool.h>
 
 // TODO: Maybe rename NONE to VOID/NULL?
-#define ERR_CODE_GENERAL -1
-#define ERR_CODE_NONE 0
-#define ERR_MSG_GENERAL "An unexpected error occurd."
-#define ERR_MSG_NONE ""
-#define ERR_MSG_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
+#define ERROR_CODE_GENERAL -1
+#define ERROR_CODE_NONE 0
+#define ERROR_MESSAGE_GENERAL "An unexpected error occurd."
+#define ERROR_MESSAGE_NONE ""
+#define ERROR_MESSAGE_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
-#define OK_CODE_GENERAL 0
-#define OK_CODE_VOID 0
+#define OK_SIZE_VOID 0
 #define OK_SIZE_NONE 0
-#define OK_MSG_GENERAL "Operation succeeded."
-#define OK_MSG_VOID ""
+#define OK_VALUE_VOID ""
 #define OK_VALUE_NONE NULL
 
 #define SOME_SIZE_NONE 0
