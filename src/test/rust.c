@@ -88,22 +88,22 @@ Test(result_std_error, _1) {
   cr_assert_eq(strcmp(actual.error.message, expected.error.message), 0);
 }
 
-// // ####################
-// // OPTION
-// // ####################
-// Test(option_some, _1) {
-//   char* msg = "ok";
-//   Option actual = option_some(&msg);
-//   Option expected = (Option) {&msg, NULL};
-// 
-//   cr_assert_eq(option_is_some(&actual), true);
-//   cr_assert_eq(option_is_none(&actual), false);
-//   cr_assert_eq(strcmp((char*) actual.some, (char*) expected.some), 0);
-// }
-// 
-// Test(option_none, _1) {
-//   Option actual = option_none();
-// 
-//   cr_assert_eq(option_is_some(&actual), false);
-//   cr_assert_eq(option_is_none(&actual), true);
-// }
+// ####################
+// OPTION
+// ####################
+Test(option_some, _1) {
+  char* msg = "ok";
+  Option actual = option_some(sizeof(*msg), &msg);
+  Option expected = {some_new(sizeof(*msg), &msg), NONE_SOME};
+
+  cr_assert(option_is_some(&actual));
+  cr_assert(option_is_none(&actual) == false);
+  cr_assert_eq(strcmp((char*) actual.some.value, (char*) expected.some.value), 0);
+}
+
+Test(option_none, _1) {
+  Option actual = option_none();
+
+  cr_assert(option_is_some(&actual) == false);
+  cr_assert(option_is_none(&actual));
+}

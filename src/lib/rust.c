@@ -81,9 +81,9 @@ Option option_none() {
 }
 
 bool option_is_some(const Option* option) {
-  return option->some.size > 0 && option->some.value != NULL && &option->none == &NONE_SOME;
+  return option->some.size > 0 && option->some.value != NULL;
 }
 
 bool option_is_none(const Option* option) {
-  return option->some.size == SOME_NONE.size && strcmp((char*) option->some.value, (char*) SOME_NONE.value) && &option->none == &NONE;
+  return option->some.size == SOME_NONE.size && option->some.value == SOME_NONE.value;
 }
