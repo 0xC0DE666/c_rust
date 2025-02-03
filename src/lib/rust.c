@@ -46,7 +46,8 @@ bool result_is_ok(const Result* result) {
 }
 
 bool result_is_void(const Result* result) {
-  return strcmp((char*) result->ok.value, (char*) OK_VOID.value) == 0 &&
+  return result->ok.value != OK_NULL.value &&
+    strcmp((char*) result->ok.value, (char*) OK_VOID.value) == 0 &&
     result->error.code == ERROR_NULL.code &&
     result->error.message == ERROR_NULL.message;
 }
