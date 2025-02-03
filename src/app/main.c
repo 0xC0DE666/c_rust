@@ -23,6 +23,7 @@ Error oh_snap() {
 }
 
 int main() {
+  printf("%lu\n", OK_SIZE_VOID);
   printf("c_rust\n");
   printf("%lu\n", sizeof("abc\n"));
   char* msg = "abc\n";

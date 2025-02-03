@@ -3,20 +3,19 @@
 
 #include <stdbool.h>
 
-// TODO: Maybe rename NONE to VOID/NULL?
 #define ERROR_CODE_GENERAL -1
-#define ERROR_CODE_NONE 0
+#define ERROR_CODE_NULL 0
 #define ERROR_MESSAGE_GENERAL "An unexpected error occurd."
-#define ERROR_MESSAGE_NONE ""
+#define ERROR_MESSAGE_NULL NULL
 #define ERROR_MESSAGE_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
-#define OK_SIZE_VOID 0
-#define OK_SIZE_NONE 0
+#define OK_SIZE_VOID sizeof(OK_VALUE_VOID)
+#define OK_SIZE_NULL 0
 #define OK_VALUE_VOID ""
-#define OK_VALUE_NONE NULL
+#define OK_VALUE_NULL NULL
 
-#define SOME_SIZE_NONE 0
-#define SOME_VALUE_NONE NULL
+#define SOME_SIZE_NULL 0
+#define SOME_VALUE_NULL NULL
 
 // ####################
 // RESULT
@@ -26,7 +25,7 @@ typedef struct Ok {
   void* value;
 } Ok;
 extern const Ok OK_VOID;
-extern const Ok OK_NONE;
+extern const Ok OK_NULL;
 
 Ok ok_new(const size_t size, void* value);
 
@@ -35,7 +34,7 @@ typedef struct Error {
   const char* message;
 } Error;
 
-extern const Error ERROR_NONE;
+extern const Error ERROR_NULL;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
@@ -61,14 +60,14 @@ typedef struct Some {
   void* value;
 } Some;
 
-extern const Some SOME_NONE;
+extern const Some SOME_NULL;
 
 Some some_new(size_t size, void* value);
 
 typedef struct {} None;
 
 extern const None NONE;
-extern const None NONE_SOME;
+extern const None NONE_NULL;
 
 typedef struct Option {
   const Some some;
