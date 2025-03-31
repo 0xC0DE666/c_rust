@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <errno.h>
 #include <string.h>
 
@@ -61,27 +62,23 @@ bool result_is_error(const Result* result) {
 // ####################
 // OPTION
 // ####################
-Some some_new(void* value) {
-  return (Some) {value};
-}
-
-const Some SOME_NONE = {SOME_VALUE_NONE};
-
-const None NONE = {};
-const None NONE_NONE = {};
+const Some NONE = {NULL};
 
 Option option_some(void* value) {
-  return (Option) {some_new(value), NONE_NONE};
+	assert(value != NULL);
+  return (Option) {{value}, NONE};
 }
 
 Option option_none() {
-  return (Option) {SOME_NONE, NONE};
+  return (Option) {NONE, NONE};
 }
 
 bool option_is_some(const Option* option) {
-  return option->some.value != SOME_NONE.value;
+	assert(option != NULL);
+  return option->some.value != NULL;
 }
 
 bool option_is_none(const Option* option) {
-  return option->some.value == SOME_NONE.value;
+	assert(option != NULL);
+  return option->some.value == NULL && option->none.value == NULL;
 }

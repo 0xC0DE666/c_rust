@@ -55,18 +55,11 @@ typedef struct Some {
   void* value;
 } Some;
 
-extern const Some SOME_NONE;
-
-Some some_new(void* value);
-
-typedef struct {} None;
-
-extern const None NONE;
-extern const None NONE_NONE;
+extern const Some NONE;
 
 typedef struct Option {
   const Some some;
-  const None none;
+  const Some none;
 } Option;
 
 Option option_some(void* value);

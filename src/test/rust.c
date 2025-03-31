@@ -99,7 +99,7 @@ Test(ok_new, null_value) {
 Test(option_some, _1) {
   char* msg = "ok";
   Option actual = option_some(&msg);
-  Option expected = {some_new(&msg), NONE_NONE};
+  Option expected = {{&msg}, NONE};
 
   cr_assert(option_is_some(&actual));
   cr_assert(not(option_is_none(&actual)));
@@ -111,10 +111,4 @@ Test(option_none, _1) {
 
   cr_assert(not(option_is_some(&actual)));
   cr_assert(option_is_none(&actual));
-}
-
-// Test some_new with NULL value
-Test(some_new, null_value) {
-  Some some = some_new(NULL);
-  cr_assert_eq(some.value, NULL);
 }
