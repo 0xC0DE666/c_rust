@@ -4,15 +4,9 @@
 #include <stdbool.h>
 
 #define ERROR_CODE_GENERAL -1
-#define ERROR_CODE_NONE 0 // meaning success, there is an Ok value
 #define ERROR_MESSAGE_GENERAL "An unexpected error occurd."
-#define ERROR_MESSAGE_NONE NULL // meaning success, there is an Ok value
+
 #define ERROR_MESSAGE_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
-
-#define OK_VALUE_VOID ""
-#define OK_VALUE_NONE NULL
-
-#define SOME_VALUE_NONE NULL
 
 // ####################
 // RESULT
@@ -20,17 +14,11 @@
 typedef struct Ok {
   void* value;
 } Ok;
-extern const Ok OK_VOID;
-extern const Ok OK_NONE;
-
-Ok ok_new(void* value);
 
 typedef struct Error {
   const int code;
   const char* message;
 } Error;
-
-extern const Error ERROR_NONE;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
@@ -51,15 +39,8 @@ bool result_is_error(const Result* result);
 // ####################
 // OPTION
 // ####################
-typedef struct Some {
-  void* value;
-} Some;
-
-extern const Some NONE;
-
 typedef struct Option {
-  const Some some;
-  const Some none;
+  void* some;
 } Option;
 
 Option option_some(void* value);
