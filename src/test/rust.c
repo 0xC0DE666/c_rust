@@ -61,6 +61,38 @@ Test(result_std_error, _1) {
   cr_assert_eq(strcmp(actual.error.message, expected.error.message), 0);
 }
 
+// Test error_new with NULL message
+Test(error_new, null_message) {
+  Error err = error_new(ERROR_CODE_GENERAL, NULL);
+  cr_assert_eq(err.code, ERROR_CODE_GENERAL);
+  cr_assert_str_eq(err.message, ERROR_MESSAGE_GENERAL);
+}
+
+// Test result_is_void with various inputs
+Test(result_is_void, edge_cases) {
+  // Test with NULL value
+  Result res1 = {ok_new(NULL), ERROR_NULL};
+  cr_assert(not(result_is_void(&res1)));
+  
+  // Test with empty string
+  Result res2 = {ok_new(""), ERROR_NULL};
+  cr_assert(result_is_void(&res2));
+  
+  // Test with non-empty string
+  Result res3 = {ok_new("test"), ERROR_NULL};
+  cr_assert(not(result_is_void(&res3)));
+  
+  // Test with error
+  Result res4 = result_error(ERROR_CODE_GENERAL, "test");
+  cr_assert(not(result_is_void(&res4)));
+}
+
+// Test ok_new with NULL value
+Test(ok_new, null_value) {
+  Ok ok = ok_new(NULL);
+  cr_assert_eq(ok.value, NULL);
+}
+
 // ####################
 // OPTION
 // ####################
@@ -79,4 +111,10 @@ Test(option_none, _1) {
 
   cr_assert(not(option_is_some(&actual)));
   cr_assert(option_is_none(&actual));
+}
+
+// Test some_new with NULL value
+Test(some_new, null_value) {
+  Some some = some_new(NULL);
+  cr_assert_eq(some.value, NULL);
 }
