@@ -4,15 +4,15 @@
 #include <stdbool.h>
 
 #define ERROR_CODE_GENERAL -1
-#define ERROR_CODE_NULL 0
+#define ERROR_CODE_NONE 0 // meaning success, there is an Ok value
 #define ERROR_MESSAGE_GENERAL "An unexpected error occurd."
-#define ERROR_MESSAGE_NULL NULL
+#define ERROR_MESSAGE_NONE NULL // meaning success, there is an Ok value
 #define ERROR_MESSAGE_NULL_POINTER(fn_name, var_name) "[ERROR] Null pointer detected in function '" #fn_name "'. Argument '" #var_name "' is null."
 
 #define OK_VALUE_VOID ""
-#define OK_VALUE_NULL NULL
+#define OK_VALUE_NONE NULL
 
-#define SOME_VALUE_NULL NULL
+#define SOME_VALUE_NONE NULL
 
 // ####################
 // RESULT
@@ -21,7 +21,7 @@ typedef struct Ok {
   void* value;
 } Ok;
 extern const Ok OK_VOID;
-extern const Ok OK_NULL;
+extern const Ok OK_NONE;
 
 Ok ok_new(void* value);
 
@@ -30,7 +30,7 @@ typedef struct Error {
   const char* message;
 } Error;
 
-extern const Error ERROR_NULL;
+extern const Error ERROR_NONE;
 
 Error error_new(const int code, const char* message);
 Error std_error_new();
@@ -55,14 +55,14 @@ typedef struct Some {
   void* value;
 } Some;
 
-extern const Some SOME_NULL;
+extern const Some SOME_NONE;
 
 Some some_new(void* value);
 
 typedef struct {} None;
 
 extern const None NONE;
-extern const None NONE_NULL;
+extern const None NONE_NONE;
 
 typedef struct Option {
   const Some some;

@@ -14,7 +14,7 @@
 Test(result_ok, _1) {
   char* value = "ok";
   Result actual = result_ok(value);
-  Result expected = {ok_new(value), ERROR_NULL};
+  Result expected = {ok_new(value), ERROR_NONE};
 
   cr_assert(result_is_ok(&actual));
   cr_assert(not(result_is_void(&actual)));
@@ -26,7 +26,7 @@ Test(result_ok, _1) {
 
 Test(result_void, _1) {
   Result actual = result_void();
-  Result expected = {OK_VOID, ERROR_NULL};
+  Result expected = {OK_VOID, ERROR_NONE};
 
   cr_assert(result_is_ok(&actual));
   cr_assert(result_is_void(&actual));
@@ -38,7 +38,7 @@ Test(result_void, _1) {
 
 Test(result_error, _1) {
   Result actual = result_error(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL);
-  Result expected = {OK_NULL, error_new(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL)};
+  Result expected = {OK_NONE, error_new(ERROR_CODE_GENERAL, ERROR_MESSAGE_GENERAL)};
 
   cr_assert(not(result_is_ok(&actual)));
   cr_assert(not(result_is_void(&actual)));
@@ -51,7 +51,7 @@ Test(result_error, _1) {
 Test(result_std_error, _1) {
   file_404();
   Result actual = result_std_error();
-  Result expected = {OK_NULL, std_error_new()};
+  Result expected = {OK_NONE, std_error_new()};
 
   cr_assert(not(result_is_ok(&actual)));
   cr_assert(not(result_is_void(&actual)));
@@ -71,15 +71,15 @@ Test(error_new, null_message) {
 // Test result_is_void with various inputs
 Test(result_is_void, edge_cases) {
   // Test with NULL value
-  Result res1 = {ok_new(NULL), ERROR_NULL};
+  Result res1 = {ok_new(NULL), ERROR_NONE};
   cr_assert(not(result_is_void(&res1)));
   
   // Test with empty string
-  Result res2 = {ok_new(""), ERROR_NULL};
+  Result res2 = {ok_new(""), ERROR_NONE};
   cr_assert(result_is_void(&res2));
   
   // Test with non-empty string
-  Result res3 = {ok_new("test"), ERROR_NULL};
+  Result res3 = {ok_new("test"), ERROR_NONE};
   cr_assert(not(result_is_void(&res3)));
   
   // Test with error
@@ -99,7 +99,7 @@ Test(ok_new, null_value) {
 Test(option_some, _1) {
   char* msg = "ok";
   Option actual = option_some(&msg);
-  Option expected = {some_new(&msg), NONE_NULL};
+  Option expected = {some_new(&msg), NONE_NONE};
 
   cr_assert(option_is_some(&actual));
   cr_assert(not(option_is_none(&actual)));
