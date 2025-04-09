@@ -92,7 +92,7 @@ Option find_value(const char* key) {
 // Usage
 Option opt = find_value("key");
 if (option_is_some(&opt)) {
-    void* value = opt.some;
+    void* value = opt.value;
     // Use value
 }
 ```

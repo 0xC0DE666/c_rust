@@ -40,7 +40,7 @@ bool result_is_error(const Result* result);
 // OPTION
 // ####################
 typedef struct Option {
-  void* some;
+  void* value;
 } Option;
 
 Option option_some(void* value);

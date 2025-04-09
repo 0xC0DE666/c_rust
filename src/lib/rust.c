@@ -69,10 +69,10 @@ Option option_none() {
 
 bool option_is_some(const Option* option) {
 	assert(option != NULL);
-  return option->some != NULL;
+  return option->value != NULL;
 }
 
 bool option_is_none(const Option* option) {
 	assert(option != NULL);
-  return option->some == NULL;
+  return option->value == NULL;
 }
